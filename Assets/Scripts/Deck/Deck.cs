@@ -4,21 +4,52 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-   [SerializeField] List<CardSO> cards = new List<CardSO>();
+    [SerializeField] List<CardSO> cards = new List<CardSO>();
+    [SerializeField] Queue<CardSO> deck = new Queue<CardSO>();
 
     private void Start()
     {
-        CardSO card = DrawCard();
-        Debug.Log($"Drawed {card} and its value is {card.GetValue()}");
+        InitializeDeck();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && CanDraw())
+        {
+            CardSO card = DrawCard();
+            Debug.Log($"Drawed {card} and its value is {card.GetValue()}");
+            Debug.Log($"Cards in the deck: {deck.Count}");
+        }
+    }
+
+    public void InitializeDeck()
+    {
+        deck.Clear();
+
+        float zPos = 0; // Distance between cards
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            deck.Enqueue(cards[i]);
+
+            Transform cardInstance = Instantiate(cards[i].GetTransform(), new Vector3(0, transform.position.y + zPos, 0), Quaternion.Euler(90, 0, 0));
+
+            cardInstance.SetParent(transform);
+
+            zPos += 0.0005f;
+        }
     }
 
     public CardSO DrawCard()
     {
-        return cards[Random.Range(0, GetCardsNum())];
+        return deck.Dequeue();
     }
 
-    public int GetCardsNum()
+    public bool CanDraw()
     {
-        return cards.Count;
+        if (deck.Count > 0)
+            return true;
+        else
+            return false;
     }
 }

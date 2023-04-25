@@ -19,12 +19,12 @@ public class CardSO : ScriptableObject
         return value;
     }
 
-    public GameObject GetCardPrefab()
+    public GameObject GetPrefab()
     {
         return cardPrefab;
     }
 
-    public Transform GetCardTransform()
+    public Transform GetTransform()
     {
         return cardPrefab.transform;
     }

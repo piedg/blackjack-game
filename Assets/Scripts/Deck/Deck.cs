@@ -12,14 +12,13 @@ public class Deck : MonoBehaviour
         InitializeDeck();
     }
 
-    private void Update()
+    private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0) && CanDraw())
-        {
-            CardSO card = DrawCard();
-            Debug.Log($"Drawed {card} and its value is {card.GetValue()}");
-            Debug.Log($"Cards in the deck: {deck.Count}");
-        }
+        if (!CanDraw()) return;
+
+        CardSO card = DrawCard();
+        Debug.Log($"Drawed {card} and its value is {card.GetValue()}");
+        Debug.Log($"Cards in the deck: {deck.Count}");
     }
 
     public void InitializeDeck()

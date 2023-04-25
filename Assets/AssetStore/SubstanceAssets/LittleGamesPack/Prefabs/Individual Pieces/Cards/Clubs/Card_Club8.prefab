@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2392292380715656663}
   - component: {fileID: 3959425617904843093}
   - component: {fileID: -5513262516286731137}
+  - component: {fileID: -5062756489056739177}
   m_Layer: 0
   m_Name: Card_Club8
   m_TagString: Untagged
@@ -94,7 +95,7 @@ BoxCollider:
   m_GameObject: {fileID: 4193939009279460354}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1332013, y: 0.19488752, z: 0.00035491405}
   m_Center: {x: 0.000000014901161, y: 0, z: -4.6790947e-16}
@@ -112,5 +113,17 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 124
   m_CollisionDetection: 0
+--- !u!114 &-5062756489056739177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193939009279460354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7abe1c51d1b4ad4e98497a7b1a87232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

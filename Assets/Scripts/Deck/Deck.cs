@@ -9,6 +9,8 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
+        SortCards();
+
         InitializeDeck();
     }
 
@@ -25,17 +27,42 @@ public class Deck : MonoBehaviour
     {
         deck.Clear();
 
-        float zPos = 0; // Distance between cards
+        float cardsGap = 0; // distance between cards
 
         for (int i = 0; i < cards.Count; i++)
         {
             deck.Enqueue(cards[i]);
 
-            Transform cardInstance = Instantiate(cards[i].GetTransform(), new Vector3(0, transform.position.y + zPos, 0), Quaternion.Euler(90, 0, 0));
+            Transform cardInstance = Instantiate(cards[i].GetTransform(), new Vector3(0, transform.position.y + cardsGap, 0), Quaternion.Euler(90, 0, 0));
 
             cardInstance.SetParent(transform);
 
-            zPos += 0.0005f;
+            cardsGap += 0.0005f;
+        }
+    }
+
+    private void SortCards()
+    {
+        // Bubble sort algorithms
+        bool swapped;
+
+        for (int i = 0; i < cards.Count - 1; i++)
+        {
+            swapped = false;
+            for (int j = 0; j < cards.Count - i - 1; j++)
+            {
+                if (cards[j].GetId() > cards[j + 1].GetId())
+                {
+                    CardSO temp = cards[j];
+                    cards[j] = cards[j + 1];
+                    cards[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (!swapped)
+            {
+                break;
+            }
         }
     }
 

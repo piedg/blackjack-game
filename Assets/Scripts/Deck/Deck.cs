@@ -4,28 +4,33 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField] List<CardSO> cards = new List<CardSO>();
-    [SerializeField] Queue<CardSO> deck = new Queue<CardSO>();
+    [SerializeField] List<Card> cards = new List<Card>();
+    [SerializeField] Queue<Card> deck = new Queue<Card>();
+
+    [SerializeField] bool IsShuffling; // debug
 
     private void Start()
     {
-        SortCards();
-
-        InitializeDeck();
+        SortCards(cards);
+        InitializeDeck(cards);
     }
 
-    private void OnMouseDown()
+    private void Update()
     {
-        if (!CanDraw()) return;
-
-        CardSO card = DrawCard();
-        Debug.Log($"Drawed {card} and its value is {card.GetValue()}");
-        Debug.Log($"Cards in the deck: {deck.Count}");
+        if (IsShuffling)
+        {
+            Shuffle(cards);
+        }
     }
 
-    public void InitializeDeck()
+    public void InitializeDeck(List<Card> cards)
     {
         deck.Clear();
+
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
 
         float cardsGap = 0; // distance between cards
 
@@ -33,40 +38,17 @@ public class Deck : MonoBehaviour
         {
             deck.Enqueue(cards[i]);
 
-            Transform cardInstance = Instantiate(cards[i].GetTransform(), new Vector3(0, transform.position.y + cardsGap, 0), Quaternion.Euler(90, 0, 0));
+            Transform cardInstance = Instantiate(cards[i].GetData().GetTransform(), new Vector3(transform.position.x, transform.position.y + cardsGap, transform.position.z), Quaternion.Euler(90, 0, 0));
 
             cardInstance.SetParent(transform);
-
             cardsGap += 0.0005f;
         }
+
+        deck.Peek().SetIsDraggable(true);
+        Debug.Log(deck.Peek());
     }
 
-    private void SortCards()
-    {
-        // Bubble sort algorithms
-        bool swapped;
-
-        for (int i = 0; i < cards.Count - 1; i++)
-        {
-            swapped = false;
-            for (int j = 0; j < cards.Count - i - 1; j++)
-            {
-                if (cards[j].GetId() > cards[j + 1].GetId())
-                {
-                    CardSO temp = cards[j];
-                    cards[j] = cards[j + 1];
-                    cards[j + 1] = temp;
-                    swapped = true;
-                }
-            }
-            if (!swapped)
-            {
-                break;
-            }
-        }
-    }
-
-    public CardSO DrawCard()
+    public Card DrawCard()
     {
         return deck.Dequeue();
     }
@@ -77,5 +59,46 @@ public class Deck : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    public void Shuffle(List<Card> cards)
+    {
+        for (int i = 0; i < cards.Count / 2; i++)
+        {
+            int randomIndex = Random.Range(i, cards.Count);
+            int tempIndex = Random.Range(i, cards.Count);
+
+            Card tempCard = cards[randomIndex];
+            cards[randomIndex] = cards[tempIndex];
+            cards[tempIndex] = tempCard;
+        }
+
+        InitializeDeck(cards);
+    }
+
+    private void SortCards(List<Card> cards)
+    {
+        // bubble sort algorithm
+        bool swapped;
+
+        for (int i = 0; i < cards.Count - 1; i++)
+        {
+            swapped = false;
+            for (int j = 0; j < cards.Count - i - 1; j++)
+            {
+                if (cards[j].GetData().GetId() < cards[j + 1].GetData().GetId())
+                {
+                    Card tempCard = cards[j];
+                    cards[j] = cards[j + 1];
+                    cards[j + 1] = tempCard;
+
+                    swapped = true;
+                }
+            }
+            if (!swapped)
+            {
+                break;
+            }
+        }
     }
 }

@@ -4,51 +4,83 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    Vector3 mousePosition;
-    Vector3 startingPosition;
+    [SerializeField] CardSO cardSO;
+    bool isDraggable = false;
+
+    Vector3 startPosition;
+
+    Vector3 dist;
+    Vector3 dragStartPosition;
+    float posX;
+    float posZ;
+    float posY;
 
     bool playerNotFound;
 
     private void Start()
     {
-        startingPosition = transform.position;
+        startPosition = transform.position;
     }
 
     private void Update()
     {
         if (playerNotFound)
         {
-            transform.position = Vector3.Lerp(transform.position, startingPosition, Time.deltaTime * 5f);
+            transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
         }
     }
 
-    private Vector3 GetMousePos()
+    void OnMouseDown()
     {
-        return Camera.main.WorldToScreenPoint(transform.position);
+        dragStartPosition = transform.position;
+
+        dist = Camera.main.WorldToScreenPoint(transform.position);
+        posX = Input.mousePosition.x - dist.x;
+        posY = Input.mousePosition.y - dist.y;
+        posZ = Input.mousePosition.z - dist.z;
     }
 
-    private void OnMouseDown()
+    void OnMouseDrag()
     {
-        mousePosition = Input.mousePosition - GetMousePos();
-    }
+        float disX = Input.mousePosition.x - posX;
+        float disY = Input.mousePosition.y - posY;
+        float disZ = Input.mousePosition.z - posZ;
 
-    private void OnMouseDrag()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
+        Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
+
+        transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
     }
 
     private void OnMouseUp()
     {
-        playerNotFound = !TryAttachToPlayer();
+        playerNotFound = !TryFindPlayer();
     }
 
-    private bool TryAttachToPlayer()
+    private void OnTriggerEnter(Collider other)
     {
-        bool temp = false;
+        if(other.GetComponentInParent<Bot>())
+        {
+            Debug.Log("Player found: ");
+        }
+    }
 
-        if (temp)
-            return true;
-        else
-            return false;
+    public CardSO GetData()
+    {
+        return cardSO;
+    }
+
+    public void SetIsDraggable(bool value)
+    {
+        isDraggable = value;
+    }
+
+    public bool GetIsDraggable()
+    {
+        return isDraggable;
+    }
+
+    private bool TryFindPlayer()
+    {
+        return false;
     }
 }

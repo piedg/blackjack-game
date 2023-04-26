@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef78f7cf217a244faa5fd31c650a396, type: 3}
   m_Name: Heart_10
   m_EditorClassIdentifier: 
-  id: 9
+  id: 10
   value: 10
   isAce: 0
   cardPrefab: {fileID: 4638783911462552403, guid: 080eba544baa4e346af099bcb3d2caf7, type: 3}

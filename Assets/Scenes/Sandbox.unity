@@ -1243,7 +1243,9 @@ MonoBehaviour:
   - {fileID: -4730449889934669889, guid: 9f9e79fcd843c244185d32ee9f7aac23, type: 3}
   - {fileID: -4712276760789490610, guid: b5170d2275f45684ea03edd9f3dcf573, type: 3}
   - {fileID: -1913475091047374554, guid: 0ffa42bb9ab2a7f49beec6ea3f044d6e, type: 3}
-  StartShuffle: 0
+  deck: []
+  IsShuffling: 0
+  cardOnTop: {fileID: 0}
 --- !u!65 &7096837331408157096
 BoxCollider:
   m_ObjectHideFlags: 0

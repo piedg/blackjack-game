@@ -5,9 +5,25 @@ using UnityEngine;
 public class Deck : MonoBehaviour
 {
     [SerializeField] List<Card> cards = new List<Card>();
-    [SerializeField] Queue<Card> deck = new Queue<Card>();
+    [SerializeField] List<Card> deck = new List<Card>();
 
     [SerializeField] bool IsShuffling; // debug
+
+    [SerializeField] Card cardOnTop;
+
+    public static Deck Instance;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {
@@ -36,7 +52,7 @@ public class Deck : MonoBehaviour
 
         for (int i = 0; i < cards.Count; i++)
         {
-            deck.Enqueue(cards[i]);
+            deck.Add(cards[i]);
 
             Transform cardInstance = Instantiate(cards[i].GetData().GetTransform(), new Vector3(transform.position.x, transform.position.y + cardsGap, transform.position.z), Quaternion.Euler(90, 0, 0));
 
@@ -44,13 +60,18 @@ public class Deck : MonoBehaviour
             cardsGap += 0.0005f;
         }
 
-        deck.Peek().SetIsDraggable(true);
-        Debug.Log(deck.Peek());
+        cardOnTop = deck[deck.Count - 1];
+        Debug.Log("Last Card (card on top) " + cardOnTop);
     }
 
     public Card DrawCard()
     {
-        return deck.Dequeue();
+        return cardOnTop;
+    }
+
+    public void RemoveCardFromDeck(Card card)
+    {
+        deck.Remove(card);
     }
 
     public bool CanDraw()
@@ -86,7 +107,7 @@ public class Deck : MonoBehaviour
             swapped = false;
             for (int j = 0; j < cards.Count - i - 1; j++)
             {
-                if (cards[j].GetData().GetId() < cards[j + 1].GetData().GetId())
+                if (cards[j].GetData().GetId() > cards[j + 1].GetData().GetId())
                 {
                     Card tempCard = cards[j];
                     cards[j] = cards[j + 1];

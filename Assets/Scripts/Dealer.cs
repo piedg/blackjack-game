@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Dealer : MonoBehaviour
 {
-    Vector3 mousePos;
+    [SerializeField] List<Card> currentCards = new List<Card>();
+    [SerializeField] Transform hand;
+
     public GameObject currentCardInstance { get; set; }
     bool hasCard;
+    public bool IsBusted;
+    public bool IsWaitingCard;
+    int currentPoints;
+
 
     public static Dealer Instance;
 
@@ -24,35 +30,29 @@ public class Dealer : MonoBehaviour
 
     private void Update()
     {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         if (currentCardInstance != null)
         {
             if (Input.GetMouseButton(0))
             {
                 hasCard = true;
-                currentCardInstance.GetComponent<Card>().IsDragged = true;
-                currentCardInstance.transform.position = new Vector3(mousePos.x, 0F, mousePos.y);
+                //currentCardInstance.GetComponent<Card>().IsDragged = true;
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 hasCard = false;
-                currentCardInstance.GetComponent<Card>().IsDragged = false;
+               // currentCardInstance.GetComponent<Card>().IsDragged = false;
                 currentCardInstance = null;
             }
         }
         else
             hasCard = false;
-
-        Debug.Log("HasCard?? " + hasCard);
     }
 
     public void OnDeckClick(Card card)
     {
         if (hasCard) return;
-
-
+        
         currentCardInstance = card.gameObject;
         Debug.Log("Current Card Instance: " + currentCardInstance);
     }
@@ -63,6 +63,19 @@ public class Dealer : MonoBehaviour
         {
             currentCardInstance.transform.position = attachPosition;
             hasCard = false;
+        }
+    }
+
+    public void AttachCard(Card card)
+    {
+        if (!IsWaitingCard) return;
+        IsWaitingCard = false;
+        card.transform.position = hand.position;
+
+        if (!currentCards.Contains(card))
+        {
+            currentCards.Add(card);
+            currentPoints += card.GetData().GetValue();
         }
     }
 }

@@ -37,6 +37,8 @@ public class Deck : MonoBehaviour
         {
             Shuffle(cards);
         }
+
+    
     }
 
     public void InitializeDeck(List<Card> cards)
@@ -61,6 +63,7 @@ public class Deck : MonoBehaviour
         }
 
         cardOnTop = deck[deck.Count - 1];
+        cardOnTop.SetIsDraggable(true);
         Debug.Log("Last Card (card on top) " + cardOnTop);
     }
 

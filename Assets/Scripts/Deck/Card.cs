@@ -5,8 +5,9 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] CardSO cardSO;
-    public bool IsDragged;
     public bool IsDraggable;
+
+    Bot playerDetected;
 
     public bool isFaceUp = false;
 
@@ -18,29 +19,25 @@ public class Card : MonoBehaviour
     float posZ;
     float posY;
 
-    bool playerNotFound;
+    bool playerHandFound;
 
     public float rotationSpeed = 10.0f;
-    
+
     private void Start()
     {
         startPosition = transform.position;
-        IsDragged = false;
         IsDraggable = false;
     }
 
     private void Update()
     {
-        // Attach to player hand
-        // TODO
-
         // Drag is released
-        if (!IsDragged)
+        if (!playerHandFound)
         {
             transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
         }
 
-        if(isFaceUp)
+        if (isFaceUp)
         {
             Flip();
         }
@@ -62,29 +59,42 @@ public class Card : MonoBehaviour
     {
         if (!IsDraggable) return;
 
-         float disX = Input.mousePosition.x - posX;
-         float disY = Input.mousePosition.y - posY;
-         float disZ = Input.mousePosition.z - posZ;
+        float disX = Input.mousePosition.x - posX;
+        float disY = Input.mousePosition.y - posY;
+        float disZ = Input.mousePosition.z - posZ;
 
-         Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
+        Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
 
-         transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
+        transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
     }
 
     private void OnMouseUp()
     {
-        // playerNotFound = !TryFindPlayer();
+        if (playerHandFound && playerDetected && playerDetected.IsWaitingCard)
+        {
+            isFaceUp = true;
+            SetIsDraggable(false);
+            playerDetected.AttachCard(this);
+            Deck.Instance.RemoveCardFromDeck(this);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<Bot>())
+        if (other.transform.parent.TryGetComponent(out Bot bot))
         {
-            Deck.Instance.RemoveCardFromDeck(this);
-            Debug.Log("Player found: " + other.name);
-            IsDragged = true;
-            isFaceUp = true;
+            if (!bot.IsWaitingCard) return;
+
+            Debug.Log("Player detected: " + other.transform.parent);
+            playerHandFound = true;
+            playerDetected = bot;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        playerHandFound = false;
+        playerDetected = null;
     }
 
     public void Flip()
@@ -105,8 +115,8 @@ public class Card : MonoBehaviour
         return cardSO;
     }
 
-    private bool TryFindPlayer()
+    public void SetIsDraggable(bool value)
     {
-        return false;
+        IsDraggable = value;
     }
 }

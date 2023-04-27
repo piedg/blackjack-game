@@ -123,6 +123,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &100053022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100053023}
+  - component: {fileID: 100053024}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &100053023
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100053022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &100053024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100053022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e8dba69cfd20d4aae01f0f528bb393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPlayers: []
 --- !u!1 &645419622
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +385,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901570915}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.032, y: -0.09, z: 1.414}
+  m_LocalPosition: {x: -0.032, y: -0.1, z: 1.5}
   m_LocalScale: {x: 0.45571998, y: 0.30991998, z: 0.56602997}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -573,6 +618,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hand: {fileID: 901570916}
+  currentCards: []
+  IsBusted: 0
+  IsWaitingCard: 0
 --- !u!1 &1144613710
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +735,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hand: {fileID: 2103860029}
+  currentCards: []
+  IsBusted: 0
+  IsWaitingCard: 0
 --- !u!54 &1144613716
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -702,6 +755,51 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!1 &1301818883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1301818884}
+  - component: {fileID: 1301818885}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1301818884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301818883}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.057, y: 1.272, z: 0.542}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2082557830}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1301818885
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301818883}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.87, y: 0.31, z: 0.27}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1458266491
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458266491}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.637, y: -0.09000003, z: 1.104}
+  m_LocalPosition: {x: 0.637, y: -0.1, z: 1.201}
   m_LocalScale: {x: 0.45571998, y: 0.30991998, z: 0.56602997}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -876,6 +974,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hand: {fileID: 1458266492}
+  currentCards: []
+  IsBusted: 0
+  IsWaitingCard: 0
 --- !u!1 &2082557829
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +1006,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1301818884}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -920,6 +1023,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750aab7d9ad946b48b1511c588582430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCards: []
+  hand: {fileID: 1301818884}
 --- !u!1 &2103860028
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +1050,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2103860028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.682, y: 0, z: 1.257}
+  m_LocalPosition: {x: -0.682, y: -0.1, z: 1.398}
   m_LocalScale: {x: 0.45572, y: 0.30992, z: 0.56603}
   m_ConstrainProportionsScale: 0
   m_Children: []

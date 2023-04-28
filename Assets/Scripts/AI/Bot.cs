@@ -11,39 +11,70 @@ public class Bot : MonoBehaviour
     public bool IsWaitingCard;
 
     int currentPoints;
+    int pointsToStay;
+
+    private void Start()
+    {
+        pointsToStay = GetRandomNum();
+        IsWaitingCard = true;
+    }
 
     private void Update()
     {
-        Debug.Log(gameObject.name + " IsWaitingCard? " + IsWaitingCard);
-
         if (currentPoints > 21)
         {
+            Debug.Log(gameObject.name + " Busted!");
             IsBusted = true;
+            IsWaitingCard = false;
+        }
+        else if(currentPoints == 21)
+        {
+            Debug.Log(gameObject.name + " Black Jack!");
+            IsWaitingCard = false;
+        }
+        else if (currentPoints < pointsToStay)
+        {
+            Debug.Log(gameObject.name + " Hit!");
+            IsWaitingCard = true;
+        }
+        else
+        {
+            Debug.Log(gameObject.name + " Stop!");
+            IsWaitingCard = false;
         }
     }
 
     public void AttachCard(Card card)
     {
         if (!IsWaitingCard) return;
-        IsWaitingCard = false;
-        card.transform.position = hand.position;
+
+        //card.transform.position = hand.position;
 
         if (!currentCards.Contains(card))
         {
             currentCards.Add(card);
-            currentPoints += card.GetData().GetValue();
         }
-
-        CalculateCurrentPoints();
+        AddPoints(card.GetData().GetValue());
     }
 
-    public void CalculateCurrentPoints()
+    public int GetRandomNum()
     {
-        Debug.Log(gameObject.name + " current Points: " + currentPoints);
+        return Random.Range(11, 15);
+    }
+
+    public void AddPoints(int points)
+    {
+        currentPoints += points;
+        Debug.Log(gameObject.name + " CurrentPoints " + currentPoints);
     }
 
     public void DiscardCards(List<Card> cards)
     {
+        foreach (Card card in cards)
+        {
+            card.gameObject.SetActive(false);
+        }
+
         cards.Clear();
         currentPoints = 0;
     }

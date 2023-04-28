@@ -25,8 +25,10 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
+        transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+
         startPosition = transform.position;
-        IsDraggable = false;
+        IsDraggable = true;
     }
 
     private void Update()

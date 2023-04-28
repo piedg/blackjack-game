@@ -128,3 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSO: {fileID: 11400000, guid: 0d45d487f3c3c084d86012f56b267813, type: 2}
+  IsDraggable: 0
+  isFaceUp: 0
+  rotationSpeed: 10

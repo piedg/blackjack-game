@@ -35,10 +35,8 @@ public class Deck : MonoBehaviour
     {
         if (IsShuffling)
         {
-            Shuffle(cards);
+            Shuffle();
         }
-
-    
     }
 
     public void InitializeDeck(List<Card> cards)
@@ -85,7 +83,7 @@ public class Deck : MonoBehaviour
             return false;
     }
 
-    public void Shuffle(List<Card> cards)
+    public void Shuffle()
     {
         for (int i = 0; i < cards.Count / 2; i++)
         {

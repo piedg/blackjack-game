@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
-            player.IsWaitingCard = true;
         }
     }
 

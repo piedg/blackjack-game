@@ -13,7 +13,6 @@ public class Dealer : MonoBehaviour
     public bool IsWaitingCard;
     int currentPoints;
 
-
     public static Dealer Instance;
 
     private void Awake()

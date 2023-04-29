@@ -34,12 +34,48 @@ public class GameManager : MonoBehaviour
         InizializePlayers();
     }
 
+    private void Update()
+    {
+        CheckPlayersState();
+    }
+
     private void InizializePlayers()
     {
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
             player.IsWaitingCard = true;
+        }
+    }
+    bool anyBotWaiting = false;
+
+    private void CheckPlayersState()
+    {
+        foreach (Bot bot in currentPlayers)
+        {
+            if (bot.IsWaitingCard)
+            {
+                anyBotWaiting = true;
+                break;
+            }
+            else
+            {
+                anyBotWaiting = false;
+            }
+        }
+
+        if (anyBotWaiting)
+        {
+            // almeno un bot sta aspettando
+            Debug.Log("Almeno un Bot sta aspettando");
+        }
+        else
+        {
+            // nessun bot sta aspettando la carta
+            Debug.Log("Nessun bot sta aspettando");
+
+            dealerTurn = true;
+            dealer.IsWaitingCard = true;
         }
     }
 }

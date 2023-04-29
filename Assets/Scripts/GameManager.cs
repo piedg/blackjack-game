@@ -41,19 +41,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (Bot player in currentPlayers)
-        {
-            if (player.IsWaitingCard)
-            {
-                break;
-            }
-            else
-            {
-                playersTurn = false;
-                dealerTurn = true;
-            }
-        }
-
         if(dealerTurn)
         {
             if(dealer.GetPoints() == 21)
@@ -64,14 +51,6 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Dealer Busted!");
             }
-        }
-    }
-
-    public void GetPlayerStatus()
-    {
-        foreach (Bot player in currentPlayers)
-        {
-
         }
     }
 }

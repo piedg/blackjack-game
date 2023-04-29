@@ -823,11 +823,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hand: {fileID: 901570916}
   currentCards: []
+  hand: {fileID: 901570916}
+  currentPoints: 0
   IsBusted: 0
   IsWaitingCard: 0
-  currentPoints: 0
   pointsToStay: 0
 --- !u!1 &1124878827
 GameObject:
@@ -1076,11 +1076,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hand: {fileID: 2103860029}
   currentCards: []
+  hand: {fileID: 2103860029}
+  currentPoints: 0
   IsBusted: 0
   IsWaitingCard: 0
-  currentPoints: 0
   pointsToStay: 0
 --- !u!54 &1144613716
 Rigidbody:
@@ -1418,11 +1418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217f0ede73f655468c5a5bf4aefae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hand: {fileID: 1458266492}
   currentCards: []
+  hand: {fileID: 1458266492}
+  currentPoints: 0
   IsBusted: 0
   IsWaitingCard: 0
-  currentPoints: 0
   pointsToStay: 0
 --- !u!1 &2082557829
 GameObject:
@@ -1472,8 +1472,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentCards: []
   hand: {fileID: 1301818884}
-  selectedCard: {fileID: 0}
   currentPoints: 0
+  IsBusted: 0
+  IsWaitingCard: 0
+  selectedCard: {fileID: 0}
 --- !u!54 &2082557832
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1604,6 +1606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 249150925239625750}
   - component: {fileID: 594186936242827949}
+  - component: {fileID: 594186936242827950}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -1622,8 +1625,24 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 1.7, z: 2.5}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Size: {x: 2.5, y: 1.7317104, z: 2.5}
+  m_Center: {x: 0, y: 0.41585517, z: 0}
+--- !u!54 &594186936242827950
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594186936242827948}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &661883109136659693
 Transform:
   m_ObjectHideFlags: 0

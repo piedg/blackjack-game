@@ -16,7 +16,7 @@ public class Dealer : Player
         {
             if(selectedCard)
             {
-                selectedCard.SetIsDragged(false);
+                selectedCard.IsDragged = false;
                 selectedCard = null;
             }
         }
@@ -31,7 +31,7 @@ public class Dealer : Player
     {
         if (other.TryGetComponent(out Card card))
         {
-            if (!card.GetIsDragged())
+            if (!card.IsDragged && GameManager.Instance.dealerTurn)
             {
                 Debug.Log("Attach to Dealer");
                 AttachCard(card);
@@ -47,10 +47,10 @@ public class Dealer : Player
 
             if (hit.collider.TryGetComponent(out Card card))
             {
-                if (!card.GetIsAttached())
+                if (!card.IsAttached)
                 {
                     selectedCard = card;
-                    selectedCard.SetIsDragged(true);
+                    selectedCard.IsDragged = true;
                 }
             }
         }

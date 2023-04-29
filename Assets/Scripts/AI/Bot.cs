@@ -9,7 +9,7 @@ public class Bot : Player
     private void Start()
     {
         pointsToStay = GetRandomNum();
-        IsWaitingCard = true;
+        isWaitingCard = true;
     }
 
     private void Update()
@@ -17,23 +17,23 @@ public class Bot : Player
         if (currentPoints > 21)
         {
             Debug.Log(gameObject.name + " Busted!");
-            IsBusted = true;
-            IsWaitingCard = false;
+            isBusted = true;
+            isWaitingCard = false;
         }
         else if (currentPoints == 21)
         {
             Debug.Log(gameObject.name + " Black Jack!");
-            IsWaitingCard = false;
+            isWaitingCard = false;
         }
         else if (currentPoints < pointsToStay)
         {
             Debug.Log(gameObject.name + " Hit!");
-            IsWaitingCard = true;
+            isWaitingCard = true;
         }
         else
         {
             Debug.Log(gameObject.name + " Stop!");
-            IsWaitingCard = false;
+            isWaitingCard = false;
         }
     }
 
@@ -41,7 +41,7 @@ public class Bot : Player
     {
         if (other.TryGetComponent(out Card card))
         {
-            if (!card.GetIsDragged() && IsWaitingCard)
+            if (!card.IsDragged && isWaitingCard)
             {
                 AttachCard(card);
             }
@@ -50,8 +50,6 @@ public class Bot : Player
 
     public int GetRandomNum()
     {
-        return Random.Range(11, 18);
+        return Random.Range(12, 18);
     }
-
-  
 }

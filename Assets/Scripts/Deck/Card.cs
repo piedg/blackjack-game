@@ -6,9 +6,12 @@ public class Card : MonoBehaviour
 {
     [SerializeField] CardSO cardSO;
 
-    Bot playerDetected;
     [SerializeField] bool isDragged;
+    public bool IsDragged { get { return isDragged; } set { isDragged = value; } }
+
     [SerializeField] bool isAttached;
+    public bool IsAttached { get { return isAttached; } set { isAttached = value; } }
+
 
     public bool isFaceUp = false;
 
@@ -38,22 +41,6 @@ public class Card : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        /*if (other.transform.parent.TryGetComponent(out Bot bot))
-        {
-            if (!bot.IsWaitingCard) return;
-
-            Debug.Log("Player detected: " + other.transform.parent);
-            bot.AttachCard(this);
-            //playerDetected = bot;
-        } */
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-       // playerDetected = null;
-    }
 
     public void Flip()
     {
@@ -71,25 +58,5 @@ public class Card : MonoBehaviour
     public CardSO GetData()
     {
         return cardSO;
-    }
-
-    public void SetIsDragged(bool value)
-    {
-        isDragged = value;
-    }
-
-    public bool GetIsDragged()
-    {
-        return isDragged;
-    }
-
-    public void SetIsAttached(bool value)
-    {
-        isAttached = value;
-    }
-
-    public bool GetIsAttached()
-    {
-        return isAttached;
     }
 }

@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] protected List<Card> currentCards = new List<Card>();
-    [SerializeField] protected Transform hand;
+    [SerializeField] private List<Card> currentCards = new List<Card>();
+    [SerializeField] private Transform hand;
 
     [SerializeField] protected int currentPoints;
 
-    public bool IsBusted;
-    public bool IsWaitingCard;
+    [SerializeField] protected bool isBusted = false;
+    public bool IsBusted { get { return isBusted; } set { isBusted = value; } }
+
+    [SerializeField] protected bool isWaitingCard = false;
+    public bool IsWaitingCard { get { return isWaitingCard; } set { isWaitingCard = value; } }
 
     protected void AttachCard(Card card)
     {
         if (!IsWaitingCard) return;
 
-        card.SetIsAttached(true);
+        card.IsAttached = true;
         card.transform.SetParent(hand.transform);
 
         if (!currentCards.Contains(card))
@@ -29,16 +32,6 @@ public class Player : MonoBehaviour
     {
         currentPoints += points;
         Debug.Log(gameObject.name + " CurrentPoints " + currentPoints);
-    }
-    protected void DiscardCards(List<Card> cards)
-    {
-        foreach (Card card in cards)
-        {
-            card.gameObject.SetActive(false);
-        }
-
-        cards.Clear();
-        currentPoints = 0;
     }
 
     public int GetPoints()

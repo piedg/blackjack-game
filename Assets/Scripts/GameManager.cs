@@ -7,13 +7,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Bot> currentPlayers = new List<Bot>();
     Bot[] players;
 
+    Dealer dealer;
+
     public static GameManager Instance;
 
-    int firstTurn;
+    public bool playersTurn;
+    public bool dealerTurn;
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -26,16 +29,42 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         players = FindObjectsOfType<Bot>();
+        dealer = FindObjectOfType<Dealer>();
 
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
         }
+
+        playersTurn = true;
     }
 
     private void Update()
     {
-      
+        foreach (Bot player in currentPlayers)
+        {
+            if (player.IsWaitingCard)
+            {
+                break;
+            }
+            else
+            {
+                playersTurn = false;
+                dealerTurn = true;
+            }
+        }
+
+        if(dealerTurn)
+        {
+            if(dealer.GetPoints() == 21)
+            {
+                Debug.Log("Dealer Has Black Jack!");
+            }
+            else if(dealer.GetPoints() > 21)
+            {
+                Debug.Log("Dealer Busted!");
+            }
+        }
     }
 
     public void GetPlayerStatus()

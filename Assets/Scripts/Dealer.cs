@@ -2,30 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dealer : MonoBehaviour
+public class Dealer : Player
 {
-    [SerializeField] List<Card> currentCards = new List<Card>();
-
-    public GameObject selectedObject;
-    private Card selectedCard;
+    [SerializeField] Card selectedCard;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (!selectedCard)
-            {
-                RaycastHit hit = CastRay();
-
-                if (hit.collider.TryGetComponent(out Card card))
-                {
-                    if(!card.GetIsAttached())
-                    {
-                        selectedCard = card;
-                        selectedCard.SetIsDragged(true);
-                    }
-                }
-            }
+            DrawCard();
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -42,6 +27,34 @@ public class Dealer : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out Card card))
+        {
+            if (!card.GetIsDragged())
+            {
+                Debug.Log("Attach to Dealer");
+                AttachCard(card);
+            }
+        }
+    }
+
+    private void DrawCard()
+    {
+        if (!selectedCard)
+        {
+            RaycastHit hit = CastRay();
+
+            if (hit.collider.TryGetComponent(out Card card))
+            {
+                if (!card.GetIsAttached())
+                {
+                    selectedCard = card;
+                    selectedCard.SetIsDragged(true);
+                }
+            }
+        }
+    }
     private void DragSelectedCard()
     {
         Vector3 position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(selectedCard.gameObject.transform.position).z);

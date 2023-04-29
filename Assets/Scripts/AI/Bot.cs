@@ -2,16 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bot : MonoBehaviour
+public class Bot : Player
 {
-    [SerializeField] Transform hand;
-    [SerializeField] List<Card> currentCards = new List<Card>();
-
-    public bool IsBusted;
-    public bool IsWaitingCard;
-
-    [SerializeField] int currentPoints;
-
     [SerializeField] int pointsToStay;
 
     private void Start()
@@ -51,22 +43,8 @@ public class Bot : MonoBehaviour
         {
             if (!card.GetIsDragged() && IsWaitingCard)
             {
-                card.SetIsAttached(true);
                 AttachCard(card);
             }
-        }
-    }
-
-    public void AttachCard(Card card)
-    {
-        if (!IsWaitingCard) return;
-
-        card.transform.SetParent(hand.transform);
-
-        if (!currentCards.Contains(card))
-        {
-            currentCards.Add(card);
-            AddPoints(card.GetData().GetValue());
         }
     }
 
@@ -75,20 +53,5 @@ public class Bot : MonoBehaviour
         return Random.Range(11, 18);
     }
 
-    public void AddPoints(int points)
-    {
-        currentPoints += points;
-        Debug.Log(gameObject.name + " CurrentPoints " + currentPoints);
-    }
-
-    public void DiscardCards(List<Card> cards)
-    {
-        foreach (Card card in cards)
-        {
-            card.gameObject.SetActive(false);
-        }
-
-        cards.Clear();
-        currentPoints = 0;
-    }
+  
 }

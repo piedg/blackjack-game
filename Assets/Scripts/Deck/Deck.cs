@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
     [SerializeField] List<Card> cards = new List<Card>();
     [SerializeField] List<Card> deck = new List<Card>();
-
-    [SerializeField] bool IsShuffling; // debug
-
-    [SerializeField] Card cardOnTop;
 
     public static Deck Instance;
 
@@ -31,14 +28,6 @@ public class Deck : MonoBehaviour
         InitializeDeck(cards);
     }
 
-    private void Update()
-    {
-        if (IsShuffling)
-        {
-            Shuffle();
-        }
-    }
-
     public void InitializeDeck(List<Card> cards)
     {
         deck.Clear();
@@ -50,37 +39,15 @@ public class Deck : MonoBehaviour
 
         float cardsGap = 0; // distance between cards
 
-        for (int i = 0; i < cards.Count; i++)
+        foreach (Card card in cards)
         {
-            deck.Add(cards[i]);
-
-            Transform cardInstance = Instantiate(cards[i].GetData().GetTransform(), new Vector3(transform.position.x, transform.position.y + cardsGap, transform.position.z), Quaternion.Euler(90, 0, 0));
+            Transform cardInstance = Instantiate(card.GetData().GetTransform(), new Vector3(transform.position.x, transform.position.y + cardsGap, transform.position.z), Quaternion.Euler(90, 0, 0));
 
             cardInstance.SetParent(transform);
             cardsGap += 0.0005f;
+
+            deck.Add(card);
         }
-
-        cardOnTop = deck[deck.Count - 1];
-        cardOnTop.SetIsDraggable(true);
-        Debug.Log("Last Card (card on top) " + cardOnTop);
-    }
-
-    public Card DrawCard()
-    {
-        return cardOnTop;
-    }
-
-    public void RemoveCardFromDeck(Card card)
-    {
-        deck.Remove(card);
-    }
-
-    public bool CanDraw()
-    {
-        if (deck.Count > 0)
-            return true;
-        else
-            return false;
     }
 
     public void Shuffle()

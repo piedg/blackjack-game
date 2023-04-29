@@ -5,12 +5,13 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] CardSO cardSO;
-    public bool IsDraggable;
 
     Bot playerDetected;
+    public bool IsDragged;
 
     public bool isFaceUp = false;
 
+    // Drag and Drop 
     Vector3 startPosition;
 
     Vector3 dist;
@@ -19,22 +20,18 @@ public class Card : MonoBehaviour
     float posZ;
     float posY;
 
-    bool playerHandFound;
-
-    public float rotationSpeed = 10.0f;
+    float flipRotationSpeed = 10.0f;
 
     private void Start()
     {
         transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
 
         startPosition = transform.position;
-        IsDraggable = true;
     }
 
     private void Update()
     {
-        // Drag is released
-        if (!playerHandFound)
+        if (!IsDragged)
         {
             transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
         }
@@ -45,41 +42,35 @@ public class Card : MonoBehaviour
         }
     }
 
-    void OnMouseDown()
-    {
-        if (!IsDraggable) return;
+    /* void OnMouseDown()
+     {
+         dragStartPosition = transform.position;
 
-        dragStartPosition = transform.position;
+         dist = Camera.main.WorldToScreenPoint(transform.position);
+         posX = Input.mousePosition.x - dist.x;
+         posY = Input.mousePosition.y - dist.y;
+         posZ = Input.mousePosition.z - dist.z;
+     }
 
-        dist = Camera.main.WorldToScreenPoint(transform.position);
-        posX = Input.mousePosition.x - dist.x;
-        posY = Input.mousePosition.y - dist.y;
-        posZ = Input.mousePosition.z - dist.z;
-    }
+     void OnMouseDrag()
+     {
+         float disX = Input.mousePosition.x - posX;
+         float disY = Input.mousePosition.y - posY;
+         float disZ = Input.mousePosition.z - posZ;
 
-    void OnMouseDrag()
-    {
-        if (!IsDraggable) return;
+         Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
 
-        float disX = Input.mousePosition.x - posX;
-        float disY = Input.mousePosition.y - posY;
-        float disZ = Input.mousePosition.z - posZ;
+         transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
+     }
 
-        Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
-
-        transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
-    }
-
-    private void OnMouseUp()
-    {
-        if (playerHandFound && playerDetected && playerDetected.IsWaitingCard)
-        {
-            isFaceUp = true;
-            SetIsDraggable(false);
-            playerDetected.AttachCard(this);
-            Deck.Instance.RemoveCardFromDeck(this);
-        }
-    }
+     private void OnMouseUp()
+     {
+         if (playerDetected && playerDetected.IsWaitingCard)
+         {
+             isFaceUp = true;
+             playerDetected.AttachCard(this);
+         }
+     }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -88,14 +79,13 @@ public class Card : MonoBehaviour
             if (!bot.IsWaitingCard) return;
 
             Debug.Log("Player detected: " + other.transform.parent);
-            playerHandFound = true;
+            bot.AttachCard(this);
             playerDetected = bot;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        playerHandFound = false;
         playerDetected = null;
     }
 
@@ -109,16 +99,11 @@ public class Card : MonoBehaviour
             targetRotation += 360.0f;
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-targetRotation, 0f, 0f), rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-targetRotation, 0f, 0f), flipRotationSpeed * Time.deltaTime);
     }
 
     public CardSO GetData()
     {
         return cardSO;
-    }
-
-    public void SetIsDraggable(bool value)
-    {
-        IsDraggable = value;
     }
 }

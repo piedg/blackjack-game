@@ -1403,7 +1403,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969166808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.17}
+  m_LocalPosition: {x: 0, y: 0, z: 0.145}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1413,7 +1413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.65, y: 1.133}
+  m_AnchoredPosition: {x: -0.65, y: 1.023}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2082557829
@@ -1462,9 +1462,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCards: []
-  hand: {fileID: 1301818884}
-  IsBusted: 0
-  IsWaitingCard: 0
 --- !u!1 &2103860028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1716,7 +1713,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4638077540164866027}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 1.306, z: 0.417}
+  m_LocalPosition: {x: -0.7, y: 1.306, z: 0.334}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1790,7 +1787,6 @@ MonoBehaviour:
   - {fileID: -1913475091047374554, guid: 0ffa42bb9ab2a7f49beec6ea3f044d6e, type: 3}
   deck: []
   IsShuffling: 0
-  cardOnTop: {fileID: 0}
 --- !u!65 &7096837331408157096
 BoxCollider:
   m_ObjectHideFlags: 0

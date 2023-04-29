@@ -5,76 +5,66 @@ using UnityEngine;
 public class Dealer : MonoBehaviour
 {
     [SerializeField] List<Card> currentCards = new List<Card>();
-    [SerializeField] Transform hand;
 
-    public GameObject currentCardInstance { get; set; }
-    bool hasCard;
-    public bool IsBusted;
-    public bool IsWaitingCard;
-    int currentPoints;
-
-    public static Dealer Instance;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+    public GameObject selectedObject;
 
     private void Update()
     {
-        if (currentCardInstance != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButton(0))
+            if (!selectedObject)
             {
-                hasCard = true;
-                //currentCardInstance.GetComponent<Card>().IsDragged = true;
-            }
+                RaycastHit hit = CastRay();
 
-            if (Input.GetMouseButtonUp(0))
+                if (hit.collider.TryGetComponent(out Card card))
+                {
+                    selectedObject = hit.collider.gameObject;
+                    card.IsDragged = true;
+                }
+            }
+            else
             {
-                hasCard = false;
-               // currentCardInstance.GetComponent<Card>().IsDragged = false;
-                currentCardInstance = null;
+
             }
         }
-        else
-            hasCard = false;
-    }
-
-    public void OnDeckClick(Card card)
-    {
-        if (hasCard) return;
-        
-        currentCardInstance = card.gameObject;
-        Debug.Log("Current Card Instance: " + currentCardInstance);
-    }
-
-    public void AttachToPlayerHand(Vector3 attachPosition)
-    {
-        if (currentCardInstance != null)
+        else if (Input.GetMouseButtonUp(0))
         {
-            currentCardInstance.transform.position = attachPosition;
-            hasCard = false;
+            selectedObject.GetComponent<Card>().IsDragged = false;
+            selectedObject = null;
+            
+        }
+
+        if (selectedObject)
+        {
+            Vector3 position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(selectedObject.transform.position).z);
+
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
+
+            selectedObject.transform.position = new Vector3(
+                worldPosition.x, 
+                selectedObject.transform.position.y, 
+                worldPosition.z);
         }
     }
 
-    public void AttachCard(Card card)
+    private RaycastHit CastRay()
     {
-        if (!IsWaitingCard) return;
-        IsWaitingCard = false;
-        card.transform.position = hand.position;
+        Vector3 screenMousePosFar = new Vector3(
+            Input.mousePosition.x,
+            Input.mousePosition.y,
+            Camera.main.farClipPlane);
 
-        if (!currentCards.Contains(card))
-        {
-            currentCards.Add(card);
-            currentPoints += card.GetData().GetValue();
-        }
+        Vector3 screenMousePosNear = new Vector3(
+           Input.mousePosition.x,
+           Input.mousePosition.y,
+           Camera.main.nearClipPlane);
+
+        Vector3 worldMousePosFar = Camera.main.ScreenToWorldPoint(screenMousePosFar);
+        Vector3 worldMousePosNear = Camera.main.ScreenToWorldPoint(screenMousePosNear);
+
+        RaycastHit hit;
+        Physics.Raycast(worldMousePosNear, worldMousePosFar - worldMousePosNear, out hit);
+
+        return hit;
     }
 }

@@ -24,6 +24,18 @@ public class Dealer : Player
         {
             DragSelectedCard();
         }
+
+        if(GetPoints() > 21)
+        {
+            isBusted = true;
+            isWaitingCard = false;
+            Debug.Log("Dealer Busted!");
+        }
+        else if(GetPoints() == 21)
+        {
+            isWaitingCard = false;
+            Debug.Log("Dealer Win!");
+        }
     }
 
     private void ReleaseSelectedCard()

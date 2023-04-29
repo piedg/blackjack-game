@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Diamond_Ace
   m_EditorClassIdentifier: 
   id: 27
-  value: 10
+  value: 11
   isAce: 1
   cardPrefab: {fileID: 9155915166557002907, guid: 60425771b5b8d0c4aae2396f0e61e474, type: 3}

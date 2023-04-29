@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Spade_Ace
   m_EditorClassIdentifier: 
   id: 40
-  value: 10
+  value: 11
   isAce: 1
   cardPrefab: {fileID: 1800843900581309504, guid: 7828a58e070cef148a314decaf6110f3, type: 3}

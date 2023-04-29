@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Club_Ace
   m_EditorClassIdentifier: 
   id: 14
-  value: 10
+  value: 11
   isAce: 1
   cardPrefab: {fileID: 4107913866523956425, guid: 3c7827269bdf2ba4b9c1f07269a3617d, type: 3}

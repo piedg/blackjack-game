@@ -25,7 +25,15 @@ public class Player : MonoBehaviour
         if (!currentCards.Contains(card))
         {
             currentCards.Add(card);
-            AddPoints(card.GetData().GetValue());
+
+            if(currentCards.Count >= 3 && card.GetData().IsAce())
+            {
+                AddPoints(1);
+            }
+            else
+            {
+                AddPoints(card.GetData().GetValue());
+            }
         }
     }
     protected void AddPoints(int points)

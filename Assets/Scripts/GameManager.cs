@@ -37,6 +37,24 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CheckPlayersState();
+
+        if(dealerTurn)
+        {
+            foreach (Bot player in players)
+            {
+                if(!player.IsBusted && !dealer.IsWaitingCard)
+                {
+                    if(player.GetPoints() > dealer.GetPoints())
+                    {
+                        Debug.Log("Player " + player.name + " Win!");
+                    }
+                    else
+                    {
+                        Debug.Log("Dealer win!");
+                    }
+                }
+            }
+        }
     }
 
     private void InizializePlayers()

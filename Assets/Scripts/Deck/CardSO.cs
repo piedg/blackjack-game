@@ -19,6 +19,11 @@ public class CardSO : ScriptableObject
         return value;
     }
 
+    public bool IsAce()
+    {
+        return isAce;
+    }
+
     public GameObject GetPrefab()
     {
         return cardPrefab;

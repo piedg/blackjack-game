@@ -9,7 +9,6 @@ public class Bot : Player
     private void Start()
     {
         pointsToStay = GetRandomNum();
-        isWaitingCard = true;
     }
 
     private void Update()

@@ -31,26 +31,15 @@ public class GameManager : MonoBehaviour
         players = FindObjectsOfType<Bot>();
         dealer = FindObjectOfType<Dealer>();
 
+        InizializePlayers();
+    }
+
+    private void InizializePlayers()
+    {
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
-        }
-
-        playersTurn = true;
-    }
-
-    private void Update()
-    {
-        if(dealerTurn)
-        {
-            if(dealer.GetPoints() == 21)
-            {
-                Debug.Log("Dealer Has Black Jack!");
-            }
-            else if(dealer.GetPoints() > 21)
-            {
-                Debug.Log("Dealer Busted!");
-            }
+            player.IsWaitingCard = true;
         }
     }
 }

@@ -12,8 +12,7 @@ public class Card : MonoBehaviour
     [SerializeField] bool isAttached;
     public bool IsAttached { get { return isAttached; } set { isAttached = value; } }
 
-
-    public bool isFaceUp = false;
+    bool isFaceUp = false;
 
     Vector3 startPosition;
 
@@ -36,11 +35,11 @@ public class Card : MonoBehaviour
             }
             else
             {
+                // return to start position
                 transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
             }
         }
     }
-
 
     public void Flip()
     {

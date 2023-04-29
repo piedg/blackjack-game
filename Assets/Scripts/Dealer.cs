@@ -14,10 +14,9 @@ public class Dealer : Player
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if(selectedCard)
+            if (selectedCard)
             {
-                selectedCard.IsDragged = false;
-                selectedCard = null;
+                ReleaseSelectedCard();
             }
         }
 
@@ -25,6 +24,12 @@ public class Dealer : Player
         {
             DragSelectedCard();
         }
+    }
+
+    private void ReleaseSelectedCard()
+    {
+        selectedCard.IsDragged = false;
+        selectedCard = null;
     }
 
     private void OnTriggerStay(Collider other)
@@ -70,10 +75,10 @@ public class Dealer : Player
     private RaycastHit CastRay()
     {
         RaycastHit hit;
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
+        
         Physics.Raycast(ray, out hit, 100);
+
         return hit;
     }
 }

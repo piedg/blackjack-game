@@ -10,8 +10,9 @@ public class Bot : MonoBehaviour
     public bool IsBusted;
     public bool IsWaitingCard;
 
-    int currentPoints;
-    int pointsToStay;
+    [SerializeField] int currentPoints;
+
+    [SerializeField] int pointsToStay;
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class Bot : MonoBehaviour
             IsBusted = true;
             IsWaitingCard = false;
         }
-        else if(currentPoints == 21)
+        else if (currentPoints == 21)
         {
             Debug.Log(gameObject.name + " Black Jack!");
             IsWaitingCard = false;
@@ -44,22 +45,34 @@ public class Bot : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out Card card))
+        {
+            if (!card.GetIsDragged() && IsWaitingCard)
+            {
+                card.SetIsAttached(true);
+                AttachCard(card);
+            }
+        }
+    }
+
     public void AttachCard(Card card)
     {
         if (!IsWaitingCard) return;
 
-        //card.transform.position = hand.position;
+        card.transform.SetParent(hand.transform);
 
         if (!currentCards.Contains(card))
         {
             currentCards.Add(card);
+            AddPoints(card.GetData().GetValue());
         }
-        AddPoints(card.GetData().GetValue());
     }
 
     public int GetRandomNum()
     {
-        return Random.Range(11, 15);
+        return Random.Range(11, 18);
     }
 
     public void AddPoints(int points)

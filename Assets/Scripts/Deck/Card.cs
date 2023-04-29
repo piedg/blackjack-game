@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
 
     Bot playerDetected;
     [SerializeField] bool isDragged;
+    [SerializeField] bool isAttached;
 
     public bool isFaceUp = false;
 
@@ -26,14 +27,17 @@ public class Card : MonoBehaviour
     {
         if (!isDragged)
         {
-            transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
-        }
-
-        if (isFaceUp)
-        {
-            Flip();
+            if(isAttached)
+            {
+                Flip();
+            }
+            else
+            {
+                transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
+            }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         /*if (other.transform.parent.TryGetComponent(out Bot bot))
@@ -42,7 +46,7 @@ public class Card : MonoBehaviour
 
             Debug.Log("Player detected: " + other.transform.parent);
             bot.AttachCard(this);
-            playerDetected = bot;
+            //playerDetected = bot;
         } */
     }
 
@@ -72,5 +76,20 @@ public class Card : MonoBehaviour
     public void SetIsDragged(bool value)
     {
         isDragged = value;
+    }
+
+    public bool GetIsDragged()
+    {
+        return isDragged;
+    }
+
+    public void SetIsAttached(bool value)
+    {
+        isAttached = value;
+    }
+
+    public bool GetIsAttached()
+    {
+        return isAttached;
     }
 }

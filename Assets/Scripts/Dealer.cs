@@ -19,8 +19,11 @@ public class Dealer : MonoBehaviour
 
                 if (hit.collider.TryGetComponent(out Card card))
                 {
-                    selectedCard = card;
-                    selectedCard.SetIsDragged(true);
+                    if(!card.GetIsAttached())
+                    {
+                        selectedCard = card;
+                        selectedCard.SetIsDragged(true);
+                    }
                 }
             }
         }

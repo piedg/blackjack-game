@@ -37,4 +37,12 @@ public class GameManager : MonoBehaviour
     {
       
     }
+
+    public void GetPlayerStatus()
+    {
+        foreach (Bot player in currentPlayers)
+        {
+
+        }
+    }
 }

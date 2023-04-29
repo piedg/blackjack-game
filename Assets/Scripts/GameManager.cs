@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    bool anyBotWaiting = false;
+    bool anyBotWaiting = true;
 
     private void Awake()
     {
@@ -40,7 +41,34 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CheckPlayersState();
-        //CheckDealerState();
+
+        foreach (Bot bot in currentPlayers)
+        {
+            if (bot.GetCurrentState() == eState.BlackJack)
+            {
+                UpdateGameState(eGameState.PlayersWins);
+                return;
+            }
+        }
+
+        if (currentGameState == eGameState.DealerTurn)
+        {
+            if (dealer.GetCurrentState() == eState.Busted)
+            {
+                UpdateGameState(eGameState.PlayersWins);
+                return;
+            }
+            else if (dealer.GetCurrentState() == eState.BlackJack)
+            {
+                UpdateGameState(eGameState.DealerWins);
+                return;
+            }
+            /*else if (GetMaxNumber(currentPlayers) <= dealer.GetPoints())
+            {
+                UpdateGameState(eGameState.DealerWins);
+                return;
+            }*/
+        }
     }
 
     private void InizializePlayers()
@@ -48,7 +76,6 @@ public class GameManager : MonoBehaviour
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
-            //player.IsWaitingCard = true;
         }
     }
 
@@ -60,13 +87,7 @@ public class GameManager : MonoBehaviour
             {
                 if (bot.GetCurrentState() == eState.Hit)
                 {
-                    UpdateGameState(eGameState.PlayersTurn);
                     anyBotWaiting = true;
-                    break;
-                }
-                else if (bot.GetCurrentState() == eState.BlackJack)
-                {
-                    UpdateGameState(eGameState.PlayersWin);
                     break;
                 }
                 else
@@ -75,34 +96,10 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (anyBotWaiting)
+            if (!anyBotWaiting)
             {
-                // almeno un bot sta aspettando
-                Debug.Log("Almeno un Bot sta aspettando");
-            }
-            else
-            {
-                // nessun bot sta aspettando la carta
                 Debug.Log("Nessun bot sta aspettando");
                 UpdateGameState(eGameState.DealerTurn);
-                //dealer.IsWaitingCard = true;
-            }
-        }
-    }
-
-    private void CheckDealerState()
-    {
-        if (currentGameState == eGameState.DealerTurn)
-        {
-            if (dealer.GetCurrentState() == eState.BlackJack)
-            {
-                UpdateGameState(eGameState.DealerWin);
-                return;
-            }
-            else
-            {
-                UpdateGameState(eGameState.PlayersWin);
-                return;
             }
         }
     }
@@ -119,11 +116,11 @@ public class GameManager : MonoBehaviour
             case eGameState.DealerTurn:
                 Debug.Log("Dealer Turn!");
                 break;
-            case eGameState.PlayersWin:
-                Debug.Log("Players Win!");
+            case eGameState.PlayersWins:
+                Debug.Log("Players Wins!");
                 break;
-            case eGameState.DealerWin:
-                Debug.Log("Dealer Win!");
+            case eGameState.DealerWins:
+                Debug.Log("Dealer Wins!");
                 break;
             default:
                 Debug.Log("No State!");
@@ -135,12 +132,25 @@ public class GameManager : MonoBehaviour
     {
         return currentGameState;
     }
+
+    public int GetMaxNumber(List<Bot> players)
+    {
+        int max = 0;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].GetPoints() > max)
+            {
+                max = players[i].GetPoints();
+            }
+        }
+        return max;
+    }
 }
 
 public enum eGameState
 {
     PlayersTurn,
     DealerTurn,
-    DealerWin,
-    PlayersWin
+    DealerWins,
+    PlayersWins
 }

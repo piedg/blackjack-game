@@ -6,6 +6,11 @@ public class Dealer : Player
 {
     [SerializeField] Card selectedCard;
 
+    private void Start()
+    {
+        currentState = eState.Hit;
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))

@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         {
             currentCards.Add(card);
 
-            if (currentCards.Count >= 3 && card.GetData().IsAce())
+            if (currentCards.Count > 2 && card.GetData().IsAce())
             {
                 AddPoints(1);
             }

@@ -9,6 +9,8 @@ public class Bot : Player
     private void Start()
     {
         pointsToStay = GetRandomNum();
+
+        currentState = eState.Hit;
     }
 
     private void Update()

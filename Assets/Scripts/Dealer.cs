@@ -25,16 +25,18 @@ public class Dealer : Player
             DragSelectedCard();
         }
 
-        if(GetPoints() > 21)
+        if (GetPoints() > 21)
         {
             isBusted = true;
-            isWaitingCard = false;
-            Debug.Log("Dealer Busted!");
+            //isWaitingCard = false;
+            UpdateState(eState.Busted);
+            // Debug.Log("Dealer Busted!");
         }
-        else if(GetPoints() == 21)
+        else if (GetPoints() == 21)
         {
-            isWaitingCard = false;
-            Debug.Log("Dealer Win!");
+            //isWaitingCard = false;
+            UpdateState(eState.BlackJack);
+            //  Debug.Log("Dealer Win!");
         }
     }
 
@@ -48,7 +50,7 @@ public class Dealer : Player
     {
         if (other.TryGetComponent(out Card card))
         {
-            if (!card.IsDragged && GameManager.Instance.dealerTurn)
+            if (!card.IsDragged && GameManager.Instance.CurrentGameState() == eGameState.DealerTurn)
             {
                 Debug.Log("Attach to Dealer");
                 AttachCard(card);
@@ -88,7 +90,7 @@ public class Dealer : Player
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
+
         Physics.Raycast(ray, out hit, 100);
 
         return hit;

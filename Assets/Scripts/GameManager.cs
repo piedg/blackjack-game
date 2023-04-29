@@ -9,10 +9,14 @@ public class GameManager : MonoBehaviour
 
     Dealer dealer;
 
+    private eGameState currentGameState;
+
     public static GameManager Instance;
 
-    public bool playersTurn;
-    public bool dealerTurn;
+    //public bool playersTurn;
+    //public bool dealerTurn;
+
+    bool anyBotWaiting = false;
 
     private void Awake()
     {
@@ -32,19 +36,30 @@ public class GameManager : MonoBehaviour
         dealer = FindObjectOfType<Dealer>();
 
         InizializePlayers();
+
+        currentGameState = eGameState.PlayersTurn;
     }
 
     private void Update()
     {
-        CheckPlayersState();
-
-        if(dealerTurn)
+        if (currentGameState == eGameState.DealerTurn)
         {
+            if (dealer.GetCurrentState() == eState.Busted)
+            {
+                UpdateGameState(eGameState.PlayerWin);
+                return;
+            }
+            else if (dealer.GetCurrentState() == eState.BlackJack)
+            {
+                UpdateGameState(eGameState.DealerWin);
+                return;
+            }
+
             foreach (Bot player in players)
             {
-                if(!player.IsBusted && !dealer.IsWaitingCard)
+                if (!player.IsBusted && !dealer.IsWaitingCard)
                 {
-                    if(player.GetPoints() > dealer.GetPoints())
+                    if (player.GetPoints() > dealer.GetPoints())
                     {
                         Debug.Log("Player " + player.name + " Win!");
                     }
@@ -55,6 +70,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        CheckPlayersState();
     }
 
     private void InizializePlayers()
@@ -65,16 +81,21 @@ public class GameManager : MonoBehaviour
             player.IsWaitingCard = true;
         }
     }
-    bool anyBotWaiting = false;
 
     private void CheckPlayersState()
     {
         foreach (Bot bot in currentPlayers)
         {
-            if (bot.IsWaitingCard)
+            if (bot.GetCurrentState() == eState.Hit)
             {
+                UpdateGameState(eGameState.PlayersTurn);
                 anyBotWaiting = true;
                 break;
+            }
+            else if(bot.GetCurrentState() == eState.BlackJack)
+            {
+                UpdateGameState(eGameState.PlayerWin);
+                return;
             }
             else
             {
@@ -91,9 +112,46 @@ public class GameManager : MonoBehaviour
         {
             // nessun bot sta aspettando la carta
             Debug.Log("Nessun bot sta aspettando");
-
-            dealerTurn = true;
+            UpdateGameState(eGameState.DealerTurn);
+            //dealerTurn = true;
             dealer.IsWaitingCard = true;
         }
     }
+
+    private void UpdateGameState(eGameState newState)
+    {
+        currentGameState = newState;
+
+        switch (newState)
+        {
+            case eGameState.PlayersTurn:
+                Debug.Log("Players Turn!");
+                break;
+            case eGameState.DealerTurn:
+                Debug.Log("Dealer Turn!");
+                break;
+            case eGameState.PlayerWin:
+                Debug.Log("Players Win!");
+                break;
+            case eGameState.DealerWin:
+                Debug.Log("Dealer Win!");
+                break;
+            default:
+                Debug.Log("No State!");
+                break;
+        }
+    }
+
+    public eGameState CurrentGameState()
+    {
+        return currentGameState;
+    }
+}
+
+public enum eGameState
+{
+    PlayersTurn,
+    DealerTurn,
+    DealerWin,
+    PlayerWin
 }

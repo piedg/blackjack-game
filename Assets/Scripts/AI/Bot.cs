@@ -15,23 +15,23 @@ public class Bot : Player
     {
         if (currentPoints > 21)
         {
-            Debug.Log(gameObject.name + " Busted!");
+            UpdateState(eState.Busted);
             isBusted = true;
             isWaitingCard = false;
         }
         else if (currentPoints == 21)
         {
-            Debug.Log(gameObject.name + " Black Jack!");
+            UpdateState(eState.BlackJack);
             isWaitingCard = false;
         }
         else if (currentPoints < pointsToStay)
         {
-            Debug.Log(gameObject.name + " Hit!");
+            UpdateState(eState.Hit);
             isWaitingCard = true;
         }
         else
         {
-            Debug.Log(gameObject.name + " Stop!");
+            UpdateState(eState.Stop);
             isWaitingCard = false;
         }
     }

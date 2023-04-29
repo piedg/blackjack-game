@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     [SerializeField] protected int currentPoints;
 
     [SerializeField] protected bool isBusted = false;
+
+    eState currentState;
+
     public bool IsBusted { get { return isBusted; } set { isBusted = value; } }
 
     [SerializeField] protected bool isWaitingCard = false;
@@ -26,7 +29,7 @@ public class Player : MonoBehaviour
         {
             currentCards.Add(card);
 
-            if(currentCards.Count >= 3 && card.GetData().IsAce())
+            if (currentCards.Count >= 3 && card.GetData().IsAce())
             {
                 AddPoints(1);
             }
@@ -46,5 +49,42 @@ public class Player : MonoBehaviour
     {
         return currentPoints;
     }
+
+    protected void UpdateState(eState newState)
+    {
+        currentState = newState;
+
+        switch (newState)
+        {
+            case eState.Busted:
+                Debug.Log(gameObject.name + " Busted!");
+                break;
+            case eState.Hit:
+                Debug.Log(gameObject.name + " Hit!");
+                break;
+            case eState.Stop:
+                Debug.Log(gameObject.name + " Stop!");
+                break;
+            case eState.BlackJack:
+                Debug.Log(gameObject.name + " Black Jack!");
+                break;
+            default:
+                Debug.Log(gameObject.name + " No State!");
+                break;
+        }
+    }
+
+    public eState GetCurrentState()
+    {
+        return currentState;
+    }
+}
+
+public enum eState
+{
+    Busted,
+    Hit,
+    Stop,
+    BlackJack
 }
 

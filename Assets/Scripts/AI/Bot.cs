@@ -16,23 +16,23 @@ public class Bot : Player
         if (currentPoints > 21)
         {
             UpdateState(eState.Busted);
-            isBusted = true;
-            isWaitingCard = false;
+            //isBusted = true;
+            //isWaitingCard = false;
         }
         else if (currentPoints == 21)
         {
             UpdateState(eState.BlackJack);
-            isWaitingCard = false;
+            //isWaitingCard = false;
         }
         else if (currentPoints < pointsToStay)
         {
             UpdateState(eState.Hit);
-            isWaitingCard = true;
+            //isWaitingCard = true;
         }
         else
         {
             UpdateState(eState.Stop);
-            isWaitingCard = false;
+            //isWaitingCard = false;
         }
     }
 
@@ -40,7 +40,7 @@ public class Bot : Player
     {
         if (other.TryGetComponent(out Card card))
         {
-            if (!card.IsDragged && isWaitingCard)
+            if (!card.IsDragged && currentState == eState.Hit)
             {
                 AttachCard(card);
             }

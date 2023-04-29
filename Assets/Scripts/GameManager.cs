@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    //public bool playersTurn;
-    //public bool dealerTurn;
-
     bool anyBotWaiting = false;
 
     private void Awake()
@@ -42,35 +39,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentGameState == eGameState.DealerTurn)
-        {
-            if (dealer.GetCurrentState() == eState.Busted)
-            {
-                UpdateGameState(eGameState.PlayerWin);
-                return;
-            }
-            else if (dealer.GetCurrentState() == eState.BlackJack)
-            {
-                UpdateGameState(eGameState.DealerWin);
-                return;
-            }
-
-            foreach (Bot player in players)
-            {
-                if (!player.IsBusted && !dealer.IsWaitingCard)
-                {
-                    if (player.GetPoints() > dealer.GetPoints())
-                    {
-                        Debug.Log("Player " + player.name + " Win!");
-                    }
-                    else
-                    {
-                        Debug.Log("Dealer win!");
-                    }
-                }
-            }
-        }
         CheckPlayersState();
+        //CheckDealerState();
     }
 
     private void InizializePlayers()
@@ -78,43 +48,62 @@ public class GameManager : MonoBehaviour
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
-            player.IsWaitingCard = true;
+            //player.IsWaitingCard = true;
         }
     }
 
     private void CheckPlayersState()
     {
-        foreach (Bot bot in currentPlayers)
+        if (currentGameState == eGameState.PlayersTurn)
         {
-            if (bot.GetCurrentState() == eState.Hit)
+            foreach (Bot bot in currentPlayers)
             {
-                UpdateGameState(eGameState.PlayersTurn);
-                anyBotWaiting = true;
-                break;
+                if (bot.GetCurrentState() == eState.Hit)
+                {
+                    UpdateGameState(eGameState.PlayersTurn);
+                    anyBotWaiting = true;
+                    break;
+                }
+                else if (bot.GetCurrentState() == eState.BlackJack)
+                {
+                    UpdateGameState(eGameState.PlayersWin);
+                    break;
+                }
+                else
+                {
+                    anyBotWaiting = false;
+                }
             }
-            else if(bot.GetCurrentState() == eState.BlackJack)
+
+            if (anyBotWaiting)
             {
-                UpdateGameState(eGameState.PlayerWin);
+                // almeno un bot sta aspettando
+                Debug.Log("Almeno un Bot sta aspettando");
+            }
+            else
+            {
+                // nessun bot sta aspettando la carta
+                Debug.Log("Nessun bot sta aspettando");
+                UpdateGameState(eGameState.DealerTurn);
+                //dealer.IsWaitingCard = true;
+            }
+        }
+    }
+
+    private void CheckDealerState()
+    {
+        if (currentGameState == eGameState.DealerTurn)
+        {
+            if (dealer.GetCurrentState() == eState.BlackJack)
+            {
+                UpdateGameState(eGameState.DealerWin);
                 return;
             }
             else
             {
-                anyBotWaiting = false;
+                UpdateGameState(eGameState.PlayersWin);
+                return;
             }
-        }
-
-        if (anyBotWaiting)
-        {
-            // almeno un bot sta aspettando
-            Debug.Log("Almeno un Bot sta aspettando");
-        }
-        else
-        {
-            // nessun bot sta aspettando la carta
-            Debug.Log("Nessun bot sta aspettando");
-            UpdateGameState(eGameState.DealerTurn);
-            //dealerTurn = true;
-            dealer.IsWaitingCard = true;
         }
     }
 
@@ -130,7 +119,7 @@ public class GameManager : MonoBehaviour
             case eGameState.DealerTurn:
                 Debug.Log("Dealer Turn!");
                 break;
-            case eGameState.PlayerWin:
+            case eGameState.PlayersWin:
                 Debug.Log("Players Win!");
                 break;
             case eGameState.DealerWin:
@@ -153,5 +142,5 @@ public enum eGameState
     PlayersTurn,
     DealerTurn,
     DealerWin,
-    PlayerWin
+    PlayersWin
 }

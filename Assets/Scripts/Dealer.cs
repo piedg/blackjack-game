@@ -27,16 +27,11 @@ public class Dealer : Player
 
         if (GetPoints() > 21)
         {
-            isBusted = true;
-            //isWaitingCard = false;
             UpdateState(eState.Busted);
-            // Debug.Log("Dealer Busted!");
         }
         else if (GetPoints() == 21)
         {
-            //isWaitingCard = false;
             UpdateState(eState.BlackJack);
-            //  Debug.Log("Dealer Win!");
         }
     }
 

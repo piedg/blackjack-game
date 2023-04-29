@@ -9,18 +9,18 @@ public class Player : MonoBehaviour
 
     [SerializeField] protected int currentPoints;
 
-    [SerializeField] protected bool isBusted = false;
+   // [SerializeField] protected bool isBusted = false;
 
-    eState currentState;
+    protected eState currentState;
 
-    public bool IsBusted { get { return isBusted; } set { isBusted = value; } }
+   // public bool IsBusted { get { return isBusted; } set { isBusted = value; } }
 
-    [SerializeField] protected bool isWaitingCard = false;
-    public bool IsWaitingCard { get { return isWaitingCard; } set { isWaitingCard = value; } }
+    //[SerializeField] protected bool isWaitingCard = false;
+//    public bool IsWaitingCard { get { return isWaitingCard; } set { isWaitingCard = value; } }
 
     protected void AttachCard(Card card)
     {
-        if (!IsWaitingCard) return;
+        if (currentState != eState.Hit) return;
 
         card.IsAttached = true;
         card.transform.SetParent(hand.transform);

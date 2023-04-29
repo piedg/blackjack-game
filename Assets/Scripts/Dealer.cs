@@ -7,64 +7,57 @@ public class Dealer : MonoBehaviour
     [SerializeField] List<Card> currentCards = new List<Card>();
 
     public GameObject selectedObject;
+    private Card selectedCard;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (!selectedObject)
+            if (!selectedCard)
             {
                 RaycastHit hit = CastRay();
 
                 if (hit.collider.TryGetComponent(out Card card))
                 {
-                    selectedObject = hit.collider.gameObject;
-                    card.IsDragged = true;
+                    selectedCard = card;
+                    selectedCard.SetIsDragged(true);
                 }
-            }
-            else
-            {
-
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            selectedObject.GetComponent<Card>().IsDragged = false;
-            selectedObject = null;
-            
+            if(selectedCard)
+            {
+                selectedCard.SetIsDragged(false);
+                selectedCard = null;
+            }
         }
 
-        if (selectedObject)
+        if (selectedCard)
         {
-            Vector3 position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(selectedObject.transform.position).z);
-
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
-
-            selectedObject.transform.position = new Vector3(
-                worldPosition.x, 
-                selectedObject.transform.position.y, 
-                worldPosition.z);
+            DragSelectedCard();
         }
+    }
+
+    private void DragSelectedCard()
+    {
+        Vector3 position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(selectedCard.gameObject.transform.position).z);
+
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
+
+        selectedCard.gameObject.transform.position = new Vector3(
+            worldPosition.x,
+            selectedCard.gameObject.transform.position.y,
+            worldPosition.z);
     }
 
     private RaycastHit CastRay()
     {
-        Vector3 screenMousePosFar = new Vector3(
-            Input.mousePosition.x,
-            Input.mousePosition.y,
-            Camera.main.farClipPlane);
-
-        Vector3 screenMousePosNear = new Vector3(
-           Input.mousePosition.x,
-           Input.mousePosition.y,
-           Camera.main.nearClipPlane);
-
-        Vector3 worldMousePosFar = Camera.main.ScreenToWorldPoint(screenMousePosFar);
-        Vector3 worldMousePosNear = Camera.main.ScreenToWorldPoint(screenMousePosNear);
-
         RaycastHit hit;
-        Physics.Raycast(worldMousePosNear, worldMousePosFar - worldMousePosNear, out hit);
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Physics.Raycast(ray, out hit, 100);
         return hit;
     }
 }

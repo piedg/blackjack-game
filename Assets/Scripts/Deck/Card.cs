@@ -7,18 +7,11 @@ public class Card : MonoBehaviour
     [SerializeField] CardSO cardSO;
 
     Bot playerDetected;
-    public bool IsDragged;
+    [SerializeField] bool isDragged;
 
     public bool isFaceUp = false;
 
-    // Drag and Drop 
     Vector3 startPosition;
-
-    Vector3 dist;
-    Vector3 dragStartPosition;
-    float posX;
-    float posZ;
-    float posY;
 
     float flipRotationSpeed = 10.0f;
 
@@ -31,7 +24,7 @@ public class Card : MonoBehaviour
 
     private void Update()
     {
-        if (!IsDragged)
+        if (!isDragged)
         {
             transform.position = Vector3.Lerp(transform.position, startPosition, Time.deltaTime * 5f);
         }
@@ -41,52 +34,21 @@ public class Card : MonoBehaviour
             Flip();
         }
     }
-
-    /* void OnMouseDown()
-     {
-         dragStartPosition = transform.position;
-
-         dist = Camera.main.WorldToScreenPoint(transform.position);
-         posX = Input.mousePosition.x - dist.x;
-         posY = Input.mousePosition.y - dist.y;
-         posZ = Input.mousePosition.z - dist.z;
-     }
-
-     void OnMouseDrag()
-     {
-         float disX = Input.mousePosition.x - posX;
-         float disY = Input.mousePosition.y - posY;
-         float disZ = Input.mousePosition.z - posZ;
-
-         Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
-
-         transform.position = new Vector3(lastPos.x, dragStartPosition.y, lastPos.z);
-     }
-
-     private void OnMouseUp()
-     {
-         if (playerDetected && playerDetected.IsWaitingCard)
-         {
-             isFaceUp = true;
-             playerDetected.AttachCard(this);
-         }
-     }*/
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.TryGetComponent(out Bot bot))
+        /*if (other.transform.parent.TryGetComponent(out Bot bot))
         {
             if (!bot.IsWaitingCard) return;
 
             Debug.Log("Player detected: " + other.transform.parent);
             bot.AttachCard(this);
             playerDetected = bot;
-        }
+        } */
     }
 
     private void OnTriggerExit(Collider other)
     {
-        playerDetected = null;
+       // playerDetected = null;
     }
 
     public void Flip()
@@ -105,5 +67,10 @@ public class Card : MonoBehaviour
     public CardSO GetData()
     {
         return cardSO;
+    }
+
+    public void SetIsDragged(bool value)
+    {
+        isDragged = value;
     }
 }

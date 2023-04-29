@@ -50,6 +50,7 @@ public class Deck : MonoBehaviour
         }
     }
 
+    // Called by UI Button
     public void Shuffle()
     {
         for (int i = 0; i < cards.Count / 2; i++)

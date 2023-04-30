@@ -9,11 +9,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] protected int currentPoints;
 
-    protected eState currentState;
+    protected ePlayerState currentState;
 
     protected void AttachCard(Card card)
     {
-        if (currentState != eState.Hit) return;
+        if (currentState != ePlayerState.Hit) return;
 
         card.IsAttached = true;
         card.transform.SetParent(hand.transform);
@@ -44,22 +44,22 @@ public class Player : MonoBehaviour
         return currentPoints;
     }
 
-    protected void UpdateState(eState newState)
+    protected void UpdateState(ePlayerState newState)
     {
         currentState = newState;
 
-        switch (newState)
+        switch (currentState)
         {
-            case eState.Busted:
+            case ePlayerState.Busted:
                 Debug.Log(gameObject.name + " Busted!");
                 break;
-            case eState.Hit:
+            case ePlayerState.Hit:
                 Debug.Log(gameObject.name + " Hit!");
                 break;
-            case eState.Stop:
+            case ePlayerState.Stop:
                 Debug.Log(gameObject.name + " Stop!");
                 break;
-            case eState.BlackJack:
+            case ePlayerState.BlackJack:
                 Debug.Log(gameObject.name + " Black Jack!");
                 break;
             default:
@@ -68,13 +68,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public eState GetCurrentState()
+    public ePlayerState GetCurrentState()
     {
         return currentState;
     }
 }
 
-public enum eState
+public enum ePlayerState
 {
     Busted,
     Hit,

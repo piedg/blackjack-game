@@ -10,26 +10,26 @@ public class Bot : Player
     {
         pointsToStay = GetRandomNum();
 
-        currentState = eState.Hit;
+        currentState = ePlayerState.Hit;
     }
 
     private void Update()
     {
         if (currentPoints > 21)
         {
-            UpdateState(eState.Busted);
+            UpdateState(ePlayerState.Busted);
         }
         else if (currentPoints == 21)
         {
-            UpdateState(eState.BlackJack);
+            UpdateState(ePlayerState.BlackJack);
         }
         else if (currentPoints < pointsToStay)
         {
-            UpdateState(eState.Hit);
+            UpdateState(ePlayerState.Hit);
         }
         else
         {
-            UpdateState(eState.Stop);
+            UpdateState(ePlayerState.Stop);
         }
     }
 
@@ -37,7 +37,7 @@ public class Bot : Player
     {
         if (other.TryGetComponent(out Card card))
         {
-            if (!card.IsDragged && currentState == eState.Hit)
+            if (!card.IsDragged && currentState == ePlayerState.Hit)
             {
                 AttachCard(card);
             }

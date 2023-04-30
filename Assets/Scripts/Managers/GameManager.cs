@@ -6,6 +6,9 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] List<Bot> currentPlayers = new List<Bot>();
+    [SerializeField] List<Bot> bustedPlayers = new List<Bot>();
+
+    int playersNumber;
 
     Bot[] players;
     Dealer dealer;
@@ -34,58 +37,82 @@ public class GameManager : MonoBehaviour
 
         InizializePlayers();
 
-        currentGameState = eGameState.PlayersTurn;
+        UpdateGameState(eGameState.PlayersTurn);
     }
 
     private void Update()
     {
-        CheckPlayersState();
+        CheckTurn();
+
+        // Win Conditions
+
+        // TODO extract in functions
+
+        if (bustedPlayers.Count == playersNumber)
+        {
+            Debug.Log("Entro qui 0, All players busted!");
+            UpdateGameState(eGameState.DealerWins);
+            return;
+        }
 
         foreach (Bot bot in currentPlayers)
         {
-            if (bot.GetCurrentState() == eState.BlackJack)
+            if (bot.GetCurrentState() == ePlayerState.BlackJack)
             {
                 UpdateGameState(eGameState.PlayersWins);
+                return;
+            }
+            else if (bot.GetCurrentState() == ePlayerState.Busted)
+            {
+                bustedPlayers.Add(bot);
+                currentPlayers.Remove(bot);
                 return;
             }
         }
 
         if (currentGameState == eGameState.DealerTurn)
         {
-            if (dealer.GetCurrentState() == eState.Busted)
+            Debug.Log("Current Dealer state: " + dealer.GetCurrentState());
+
+            if (dealer.GetCurrentState() == ePlayerState.Busted)
             {
+                Debug.Log("Entro qui 1");
                 UpdateGameState(eGameState.PlayersWins);
                 return;
             }
-            else if (dealer.GetCurrentState() == eState.BlackJack)
+            else if (dealer.GetCurrentState() == ePlayerState.BlackJack)
             {
-                UpdateGameState(eGameState.DealerWins);
-                return;
-            }
-            else if (GetMaxNumber(currentPlayers) <= dealer.GetPoints())
-            {
-                UpdateGameState(eGameState.DealerWins);
-                return;
-            }
+                Debug.Log("Entro qui 2");
 
+                UpdateGameState(eGameState.DealerWins);
+                return;
+            }
+            else if (dealer.GetPoints() >= GetMaxNumber(currentPlayers) && dealer.GetCurrentState() != ePlayerState.Busted)
+            {
+                Debug.Log("Entro qui 3");
+                UpdateGameState(eGameState.DealerWins);
+                return;
+            }
         }
     }
 
     private void InizializePlayers()
     {
+        playersNumber = players.Length;
+
         foreach (Bot player in players)
         {
             currentPlayers.Add(player);
         }
     }
 
-    private void CheckPlayersState()
+    private void CheckTurn()
     {
         if (currentGameState == eGameState.PlayersTurn)
         {
             foreach (Bot bot in currentPlayers)
             {
-                if (bot.GetCurrentState() == eState.Hit)
+                if (bot.GetCurrentState() == ePlayerState.Hit)
                 {
                     anyBotWaiting = true;
                     break;
@@ -95,6 +122,7 @@ public class GameManager : MonoBehaviour
                     anyBotWaiting = false;
                 }
             }
+
             if (!anyBotWaiting)
             {
                 Debug.Log("Nessun bot sta aspettando");
@@ -102,6 +130,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     private void UpdateGameState(eGameState newState)
     {
         currentGameState = newState;
@@ -109,22 +138,34 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case eGameState.PlayersTurn:
-                Debug.Log("Players Turn!");
+                UIManager.Instance.UpdateCurrentTurnText("Players Turn");
                 break;
             case eGameState.DealerTurn:
-                Debug.Log("Dealer Turn!");
+                UIManager.Instance.UpdateCurrentTurnText("Dealer Turn");
                 break;
             case eGameState.PlayersWins:
-                Debug.Log("Players Wins!");
+                UIManager.Instance.ShowWinnerText("Players Win!");
                 break;
             case eGameState.DealerWins:
-                Debug.Log("Dealer Wins!");
+                UIManager.Instance.ShowWinnerText("Dealer Wins!");
                 break;
             default:
-                Debug.Log("No State!");
+                UIManager.Instance.UpdateCurrentTurnText("No State");
                 break;
         }
     }
+
+    public void NextRound()
+    {
+        UpdateGameState(eGameState.PlayersTurn);
+
+        // put current cards both dealer and players at the bottom of the deck
+
+        // clear current cards both dealer and players
+
+        // clear busted players
+    }
+
     public int GetMaxNumber(List<Bot> players)
     {
         int max = 0;
@@ -142,7 +183,6 @@ public class GameManager : MonoBehaviour
     {
         return currentGameState;
     }
-
 }
 
 public enum eGameState

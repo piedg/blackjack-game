@@ -8,7 +8,7 @@ public class Dealer : Player
 
     private void Start()
     {
-        currentState = eState.Hit;
+        currentState = ePlayerState.Hit;
     }
 
     private void Update()
@@ -32,11 +32,11 @@ public class Dealer : Player
 
         if (GetPoints() > 21)
         {
-            UpdateState(eState.Busted);
+            UpdateState(ePlayerState.Busted);
         }
         else if (GetPoints() == 21)
         {
-            UpdateState(eState.BlackJack);
+            UpdateState(ePlayerState.BlackJack);
         }
     }
 

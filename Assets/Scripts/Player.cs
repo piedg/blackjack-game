@@ -9,14 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] protected int currentPoints;
 
-   // [SerializeField] protected bool isBusted = false;
-
     protected eState currentState;
-
-   // public bool IsBusted { get { return isBusted; } set { isBusted = value; } }
-
-    //[SerializeField] protected bool isWaitingCard = false;
-//    public bool IsWaitingCard { get { return isWaitingCard; } set { isWaitingCard = value; } }
 
     protected void AttachCard(Card card)
     {
@@ -38,6 +31,8 @@ public class Player : MonoBehaviour
                 AddPoints(card.GetData().GetValue());
             }
         }
+
+        Deck.Instance.RemoveCardFromDeck(card);
     }
     protected void AddPoints(int points)
     {

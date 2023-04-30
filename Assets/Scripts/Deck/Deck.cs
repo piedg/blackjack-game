@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
@@ -12,7 +11,7 @@ public class Deck : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -26,12 +25,46 @@ public class Deck : MonoBehaviour
     {
         SortCards(cards);
         InitializeDeck(cards);
+        InstantiateCards(deck);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            RemoveCardFromDeck(deck[0]);
+        }
     }
 
     public void InitializeDeck(List<Card> cards)
     {
         deck.Clear();
 
+        foreach (Card card in cards)
+        {
+            deck.Add(card);
+        }
+    }
+
+    // Called by UI Button
+    public void ShuffleDeck()
+    {
+        for (int i = 0; i < deck.Count / 2; i++)
+        {
+            int randomIndex = Random.Range(i, deck.Count);
+            int tempIndex = Random.Range(i, deck.Count);
+
+            Card tempCard = deck[randomIndex];
+            deck[randomIndex] = deck[tempIndex];
+            deck[tempIndex] = tempCard;
+
+        }
+
+        InstantiateCards(deck);
+    }
+
+    private void InstantiateCards(List<Card> cardsList)
+    {
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
@@ -39,31 +72,19 @@ public class Deck : MonoBehaviour
 
         float cardsGap = 0; // distance between cards
 
-        foreach (Card card in cards)
+        foreach (Card card in cardsList)
         {
             Transform cardInstance = Instantiate(card.GetData().GetTransform(), new Vector3(transform.position.x, transform.position.y + cardsGap, transform.position.z), Quaternion.Euler(90, 0, 0));
 
             cardInstance.SetParent(transform);
             cardsGap += 0.0005f;
-
-            deck.Add(card);
         }
     }
 
-    // Called by UI Button
-    public void Shuffle()
+    public void RemoveCardFromDeck(Card card)
     {
-        for (int i = 0; i < cards.Count / 2; i++)
-        {
-            int randomIndex = Random.Range(i, cards.Count);
-            int tempIndex = Random.Range(i, cards.Count);
-
-            Card tempCard = cards[randomIndex];
-            cards[randomIndex] = cards[tempIndex];
-            cards[tempIndex] = tempCard;
-        }
-
-        InitializeDeck(cards);
+        Debug.Log("Ho rimosso " + card.name);
+        deck.Remove(card);
     }
 
     private void SortCards(List<Card> cards)

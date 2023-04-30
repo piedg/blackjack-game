@@ -12,8 +12,6 @@ public class Card : MonoBehaviour
     [SerializeField] bool isAttached;
     public bool IsAttached { get { return isAttached; } set { isAttached = value; } }
 
-    bool isFaceUp = false;
-
     Vector3 startPosition;
 
     float flipRotationSpeed = 10.0f;

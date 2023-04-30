@@ -62,11 +62,12 @@ public class GameManager : MonoBehaviour
                 UpdateGameState(eGameState.DealerWins);
                 return;
             }
-            /*else if (GetMaxNumber(currentPlayers) <= dealer.GetPoints())
+            else if (GetMaxNumber(currentPlayers) <= dealer.GetPoints())
             {
                 UpdateGameState(eGameState.DealerWins);
                 return;
-            }*/
+            }
+
         }
     }
 
@@ -124,12 +125,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    public eGameState CurrentGameState()
-    {
-        return currentGameState;
-    }
-
     public int GetMaxNumber(List<Bot> players)
     {
         int max = 0;
@@ -142,6 +137,12 @@ public class GameManager : MonoBehaviour
         }
         return max;
     }
+
+    public eGameState CurrentGameState()
+    {
+        return currentGameState;
+    }
+
 }
 
 public enum eGameState

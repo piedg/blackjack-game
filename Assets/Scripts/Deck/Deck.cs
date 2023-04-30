@@ -28,14 +28,6 @@ public class Deck : MonoBehaviour
         InstantiateCards(deck);
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            RemoveCardFromDeck(deck[0]);
-        }
-    }
-
     public void InitializeDeck(List<Card> cards)
     {
         deck.Clear();
@@ -57,7 +49,6 @@ public class Deck : MonoBehaviour
             Card tempCard = deck[randomIndex];
             deck[randomIndex] = deck[tempIndex];
             deck[tempIndex] = tempCard;
-
         }
 
         InstantiateCards(deck);

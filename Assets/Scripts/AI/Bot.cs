@@ -18,23 +18,18 @@ public class Bot : Player
         if (currentPoints > 21)
         {
             UpdateState(eState.Busted);
-            //isBusted = true;
-            //isWaitingCard = false;
         }
         else if (currentPoints == 21)
         {
             UpdateState(eState.BlackJack);
-            //isWaitingCard = false;
         }
         else if (currentPoints < pointsToStay)
         {
             UpdateState(eState.Hit);
-            //isWaitingCard = true;
         }
         else
         {
             UpdateState(eState.Stop);
-            //isWaitingCard = false;
         }
     }
 

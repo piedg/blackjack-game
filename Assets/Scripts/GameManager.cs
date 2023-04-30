@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] List<Bot> currentPlayers = new List<Bot>();
-    Bot[] players;
 
+    Bot[] players;
     Dealer dealer;
 
     private eGameState currentGameState;
@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
             Destroy(Instance);
         }
     }
-
     private void Start()
     {
         players = FindObjectsOfType<Bot>();
@@ -95,7 +94,6 @@ public class GameManager : MonoBehaviour
                     anyBotWaiting = false;
                 }
             }
-
             if (!anyBotWaiting)
             {
                 Debug.Log("Nessun bot sta aspettando");
@@ -103,7 +101,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     private void UpdateGameState(eGameState newState)
     {
         currentGameState = newState;

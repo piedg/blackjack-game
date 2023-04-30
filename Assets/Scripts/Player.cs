@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        Deck.Instance.RemoveCardFromDeck(card);
     }
     protected void AddPoints(int points)
     {

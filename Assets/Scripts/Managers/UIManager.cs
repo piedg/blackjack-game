@@ -1,20 +1,27 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [Header("In Game UI")]
     [SerializeField] Button shuffleButton;
     [SerializeField] Button nextRoundButton;
-    [SerializeField] Button pauseMenuButton;
+    [SerializeField] Button pauseButton;
 
-    [SerializeField] GameObject menuPanel;
-    [SerializeField] Button resumeMenuButton;
+    [Header("Pause Menu")]
+    [SerializeField] GameObject pauseMenuPanel;
+    [SerializeField] Button resumeButton;
+    [SerializeField] Button restartButton;
 
-    [SerializeField] TextMeshProUGUI currentTurnText;
+    [Header("Winner Panel")]
+    [SerializeField] GameObject winnerPanel;
     [SerializeField] TextMeshProUGUI winnerText;
+    [SerializeField] TextMeshProUGUI currentTurnText;
 
     private void Awake()
     {
@@ -30,9 +37,13 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        resumeButton.onClick.AddListener(OnResumeButton);
+        restartButton.onClick.AddListener(OnRestartButton);
+
+        pauseButton.onClick.AddListener(OnPauseButton);
         shuffleButton.onClick.AddListener(Deck.Instance.ShuffleDeck);
-        pauseMenuButton.onClick.AddListener(OpenInGameMenu);
-        resumeMenuButton.onClick.AddListener(CloseInGameMenu);
+
+        nextRoundButton.onClick.AddListener(OnNextRoundButton);
     }
 
     public void UpdateCurrentTurnText(string text)
@@ -42,30 +53,59 @@ public class UIManager : MonoBehaviour
 
     public void ShowWinnerText(string text)
     {
-        winnerText.gameObject.SetActive(true);
-
         winnerText.text = text.ToUpper();
-
-        pauseMenuButton.gameObject.SetActive(false);
-        shuffleButton.gameObject.SetActive(false);
-        currentTurnText.gameObject.SetActive(false);
+        ShowWinPanel(true);
+        ShowInGameUI(false);
     }
 
-    public void OpenInGameMenu()
+    private void OnResumeButton()
     {
-        menuPanel.SetActive(true);
-
-        shuffleButton.gameObject.SetActive(false);
-        currentTurnText.gameObject.SetActive(false);
-        pauseMenuButton.gameObject.SetActive(false);
+        ShowPauseMenuPanel(false);
+        ShowInGameUI(true);
     }
 
-    public void CloseInGameMenu()
+    private void OnRestartButton()
     {
-        menuPanel.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
-        shuffleButton.gameObject.SetActive(true);
-        currentTurnText.gameObject.SetActive(true);
-        pauseMenuButton.gameObject.SetActive(true);
+    private void OnPauseButton()
+    {
+        ShowPauseMenuPanel(true);
+        ShowInGameUI(false);
+    }
+
+    private void OnNextRoundButton()
+    {
+
+        // TODO remove line below
+        OnRestartButton();
+
+        //GameManager.Instance.NextRound();
+
+        ShowInGameUI(true);
+        ShowWinPanel(false);
+        ShowPauseMenuPanel(false);
+    }
+
+    private void ShowInGameUI(bool value)
+    {
+        pauseButton.gameObject.SetActive(value);
+        shuffleButton.gameObject.SetActive(value);
+        currentTurnText.gameObject.SetActive(value);
+
+        // TODO 
+        // add text for current points
+        // add text for status (?)
+    }
+
+    private void ShowPauseMenuPanel(bool value)
+    {
+        pauseMenuPanel.SetActive(value);
+    }
+
+    private void ShowWinPanel(bool value)
+    {
+        winnerPanel.SetActive(value);
     }
 }

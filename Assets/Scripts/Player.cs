@@ -72,6 +72,23 @@ public class Player : MonoBehaviour
     {
         return currentState;
     }
+
+    public List<Card> GetCurrentCards()
+    {
+        return currentCards;
+    }
+
+    public void ClearCurrentCards()
+    {
+        currentPoints = 0;
+
+        foreach (Transform child in hand.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        currentCards.Clear();
+    }
 }
 
 public enum ePlayerState

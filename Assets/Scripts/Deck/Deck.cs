@@ -72,10 +72,18 @@ public class Deck : MonoBehaviour
         }
     }
 
+    // TODO implement for update deck
     public void RemoveCardFromDeck(Card card)
     {
         Debug.Log("Ho rimosso " + card.name);
         deck.Remove(card);
+    }
+
+    // TODO implement for update deck when is next turn
+    public void AddCardToDeck(Card card)
+    {
+        Debug.Log("Add card " + card.name);
+        deck.Add(card);
     }
 
     private void SortCards(List<Card> cards)

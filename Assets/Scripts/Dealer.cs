@@ -30,11 +30,11 @@ public class Dealer : Player
             DragSelectedCard();
         }
 
-        if (GetPoints() > 21)
+        if (currentPoints > 21)
         {
             UpdateState(ePlayerState.Busted);
         }
-        else if (GetPoints() == 21)
+        else if (currentPoints == 21)
         {
             UpdateState(ePlayerState.BlackJack);
         }

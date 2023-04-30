@@ -150,7 +150,6 @@ public class GameManager : MonoBehaviour
                 UIManager.Instance.ShowWinnerText("Dealer Wins!");
                 break;
             default:
-                UIManager.Instance.UpdateCurrentTurnText("No State");
                 break;
         }
     }
@@ -163,7 +162,23 @@ public class GameManager : MonoBehaviour
 
         // clear current cards both dealer and players
 
+        foreach (Card card in dealer.GetCurrentCards())
+        {
+            Deck.Instance.AddCardToDeck(card);
+        }
+        dealer.ClearCurrentCards();
+
+        foreach (Bot bot in currentPlayers)
+        {
+            foreach (Card card in bot.GetCurrentCards())
+            {
+               // Deck.Instance.AddCardToDeck(card);
+            }
+            bot.ClearCurrentCards();
+        }
+
         // clear busted players
+        bustedPlayers.Clear();
     }
 
     public int GetMaxNumber(List<Bot> players)
